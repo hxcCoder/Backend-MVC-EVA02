@@ -14,7 +14,7 @@ Se puede: Crear, actualizar, listar y eliminar cuentas de usuarios (Admin, Pacie
 
 - Gestión de pacientes y doctores mediante modelos especificos.
 
-2. Herramientas y librerías utilizadas
+- Herramientas y librerías utilizadas
 Python 3.13
 
 - Oracle DB XE 21c
