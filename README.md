@@ -3,7 +3,7 @@
 Sistema Para Hospital – Informe
 
 1. Descripción 
-
+-
 Es un sistema de gestion de usuarios para un hospital de ejemplo, Sistema de gestion de usuarios, pacientes y doctores para un entorno clínico, construido en Python usando patron MVC y conexión a Oracle DB XE 21c.
 Fue hecho a mano usando guias y herramientas como la IA, esta funcional y organice los datos para que se puedan entender facilmente.
 
@@ -14,7 +14,7 @@ Autenticacion segura con hash de contraseñas.
 Gestión de pacientes y doctores mediante modelos especificos.
 
 2. Herramientas y librerías utilizadas
-
+-
 Python 3.13
 
 Oracle DB XE 21c
@@ -22,7 +22,7 @@ Oracle DB XE 21c
 Librerías: oracledb para conexión a Oracle, hashlib para hashing de contraseñas.
 
 # UML y relaciones
-
+-
 Clases: Cuenta → Cliente/Doctor, Paciente, Cita, BaseModel.
 
 Patrón MVC:
