@@ -1,4 +1,4 @@
-from cuenta import Cuenta
+from model.cuenta import Cuenta
 
 class Doctor(Cuenta):
     def __init__(self, db):
@@ -22,11 +22,10 @@ class Doctor(Cuenta):
     # ACTUALIZAR DOCTOR
     # ---------------------------
     def actualizar_doctor(self, usuario_id: int, datos: dict) -> bool:
-    try:
         query = f"""
         UPDATE {self.table} SET 
-            username = :1, nombre = :2, apellido = :3, email = :4, 
-            especialidad = :5, horario_atencion = :6, fecha_ingreso = :7
+        username = :1, nombre = :2, apellido = :3, email = :4, 
+        especialidad = :5, horario_atencion = :6, fecha_ingreso = :7
         WHERE id = :8
         """
         params = (
@@ -39,11 +38,8 @@ class Doctor(Cuenta):
             datos.get("fecha_ingreso"),
             usuario_id
         )
-        self.execute_query(query, params)  # Ejecuta la query
-        return True                        # Retorna bool correctamente
-    except Exception as e:
-        print("Error al actualizar doctor:", e)
-        return False
+        self.execute_query(query, params)
+        return True
 
     # ---------------------------
     # LISTAR DOCTORES

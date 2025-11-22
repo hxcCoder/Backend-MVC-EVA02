@@ -1,4 +1,4 @@
-from base import BaseModel
+from model.base import BaseModel
 
 class Cita(BaseModel):
     def __init__(self, db):
