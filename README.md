@@ -1,8 +1,7 @@
-# EVA_02 // Backend-Hospital
+#Sistema Para Hospital – Informe
 
-Sistema Para Hospital – Informe
+Descripcion
 -
-1. Descripción
 Es un sistema de gestion de usuarios para un hospital de ejemplo, Sistema de gestion de usuarios, pacientes y doctores para un entorno clínico, construido en Python usando patron MVC y conexión a Oracle DB XE 21c.
 Fue hecho a mano usando guias y herramientas como la IA, esta funcional y organice los datos para que se puedan entender facilmente.
 
