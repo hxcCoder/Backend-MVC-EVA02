@@ -1,11 +1,29 @@
-def mostrar_menu(usuario):
-    print(f"\nBienvenido {usuario.username} - Rol: {usuario.rol}")
+# view.py
+
+def mostrar_menu(usuario: dict):
+    """
+    Muestra el menú según el rol del usuario.
+    Usuario debe ser un diccionario con claves:
+    'username', 'rol', 'nombre', 'apellido', 'email', etc.
+    """
+    nombre = usuario.get("nombre", "Usuario")
+    rol = usuario.get("rol", "general")
     
-    if usuario.rol == "admin":
-        print("1. Gestionar Usuarios\n2. Gestionar Pacientes\n3. Gestionar Medicos\n0. Salir")
-    elif usuario.rol == "paciente":
-        print("1. Ver Mis Consultas\n2. Ver Mis Recetas\n0. Salir")
-    elif usuario.rol == "medico":
-        print("1. Ver Consultas\n2. Registrar Receta\n3. Gestionar Agenda\n0. Salir")
+    print(f"\nBienvenido {nombre} - Rol: {rol}\n")
+    
+    if rol == "admin":
+        print("1. Gestionar Usuarios")
+        print("2. Gestionar Pacientes")
+        print("3. Gestionar Médicos")
+        print("0. Salir")
+    elif rol == "paciente":
+        print("1. Ver Mis Datos")
+        print("2. Actualizar Mis Datos")
+        print("0. Salir")
+    elif rol == "medico":
+        print("1. Ver Pacientes")
+        print("2. Actualizar Paciente")
+        print("3. Gestionar Agenda")
+        print("0. Salir")
     else:
         print("Rol no definido")

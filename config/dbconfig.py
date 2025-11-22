@@ -1,7 +1,7 @@
 import oracledb
 
 class ConexionOracle:
-    def __init__(self, user="TU_USUARIO", password="TU_PASSWORD", dsn="localhost/XEPDB1"):
+    def __init__(self, user="System", password="Ina.2025", dsn="localhost/XEPDB1"):
         self.user = user
         self.password = password
         self.dsn = dsn

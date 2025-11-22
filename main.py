@@ -4,6 +4,22 @@ from model.paciente import Paciente
 from model.doctor import Doctor
 from config.dbconfig import ConexionOracle
 
+db = ConexionOracle()
+try:
+    db.conectar()
+    if not db.connection:
+        raise Exception("No se pudo conectar a Oracle")
+    print("Conexión exitosa a Oracle")
+except Exception as e:
+    print("Error de conexión:", e)
+    exit()
+    
+db = ConexionOracle()
+if db.connection:
+    print("Conexión exitosa a Oracle")
+else:
+    print("Error en la conexión")
+
 def main():
     # Conexión a la base de datos
     db = ConexionOracle()
