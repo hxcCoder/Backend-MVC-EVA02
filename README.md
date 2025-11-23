@@ -23,7 +23,8 @@ Python 3.13
 
 # UML y relaciones
 
-<img width="787" height="739" alt="image" src="https://github.com/user-attachments/assets/e211bacc-fa5e-48a3-a4ef-e10d8bb1211d" />
+<img width="482" height="1141" alt="image" src="https://github.com/user-attachments/assets/94ad8560-8b43-4dc8-a2c9-5fc5d5e0449f" />
+
 
 - Clases: Cuenta → Cliente/Doctor, Paciente, Cita, BaseModel.
 
