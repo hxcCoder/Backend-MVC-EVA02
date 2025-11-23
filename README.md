@@ -1,7 +1,7 @@
 # Sistema Para Hospital – Informe
 
 Descripcion
-
+-
 
 Sistema de gestion de usuarios, pacientes y doctores para un entorno clínico, 
 construido en Python usando patron MVC y conexión a Oracle DB XE 21c.
