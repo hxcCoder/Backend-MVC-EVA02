@@ -4,36 +4,31 @@ from model.paciente import Paciente
 from model.doctor import Doctor
 from config.dbconfig import ConexionOracle
 
-db = ConexionOracle()
-try:
-    db.conectar()
-    if not db.connection:
-        raise Exception("No se pudo conectar a Oracle")
-    print("Conexión exitosa a Oracle")
-except Exception as e:
-    print("Error de conexión:", e)
-    exit()
-    
-db = ConexionOracle()
-if db.connection:
-    print("Conexión exitosa a Oracle")
-else:
-    print("Error en la conexión")
-
 def main():
-    # Conexión a la base de datos
+
+    # ============================
+    # CONEXIÓN A ORACLE
+    # ============================
     db = ConexionOracle()
+    try:
+        db.conectar()
+        if not db.connection:
+            raise Exception("No se pudo conectar a Oracle")
+        print("Conexión exitosa a Oracle")
+    except Exception as e:
+        print("Error de conexión:", e)
+        return
 
     print("=== Bienvenido al Sistema MediPlus ===")
 
-    # Login simple
+    # ============================
+    # LOGIN
+    # ============================
     username = input("Usuario: ")
     password = input("Contraseña: ")
 
     cuenta_model = Cuenta(db)
     user = cuenta_model.autenticar(username, password)
-
-
 
     if not user:
         print("Usuario o contraseña incorrecta.")
@@ -41,20 +36,26 @@ def main():
 
     print(f"¡Bienvenido {user['nombre']}!")
 
-    # Menú según tipo de usuario
-    tipo_usuario = user.get("tipo", "general")
+    # ============================
+    # MENU SEGÚN ROL
+    # ============================
+    tipo_usuario = user.get("rol", "general")  # <- CORREGIDO
 
     while True:
         print("\n--- Menú Principal ---")
+        
         if tipo_usuario == "paciente":
             print("1. Ver mis datos")
             print("2. Actualizar mis datos")
+        
         elif tipo_usuario == "medico":
             print("1. Ver mis pacientes")
             print("2. Actualizar paciente")
-        else:
+        
+        else:  # admin u otros
             print("1. Gestionar Pacientes")
             print("2. Gestionar Médicos")
+
         print("0. Salir")
 
         opcion = input("Seleccione una opción: ")
@@ -63,21 +64,31 @@ def main():
             print("Saliendo del sistema...")
             break
 
-        # Aquí podrías agregar llamadas a métodos CRUD según el modelo
+        # ============================
+        # CRUD SIMPLES SEGÚN ROL
+        # ============================
+
+        # ---- OPCIÓN 1 ----
         if opcion == "1":
+            
             if tipo_usuario == "paciente":
                 paciente_model = Paciente(db)
                 datos = paciente_model.get_by_id(user["id"])
                 print("Tus datos:", datos)
+
             elif tipo_usuario == "medico":
                 paciente_model = Paciente(db)
                 pacientes = paciente_model.list_all()
                 print("Pacientes:", pacientes)
-            else:
+
+            else:  # admin
                 paciente_model = Paciente(db)
                 pacientes = paciente_model.list_all()
                 print("Pacientes:", pacientes)
+
+        # ---- OPCIÓN 2 ----
         elif opcion == "2":
+
             if tipo_usuario == "paciente":
                 paciente_model = Paciente(db)
                 nuevos_datos = {
@@ -89,10 +100,11 @@ def main():
                 }
                 success = paciente_model.actualizar_cliente(user["id"], nuevos_datos)
                 print("Actualización exitosa" if success else "Error al actualizar")
+
             elif tipo_usuario == "medico":
                 paciente_model = Paciente(db)
-                # Para simplificar, actualizamos el primer paciente
                 pacientes = paciente_model.list_all()
+
                 if pacientes:
                     paciente_id = pacientes[0]["id"]
                     nuevos_datos = {
@@ -107,10 +119,13 @@ def main():
                     print("Actualización exitosa" if success else "Error al actualizar")
                 else:
                     print("No hay pacientes registrados")
+
             else:
                 print("Función no implementada para este tipo de usuario")
+
         else:
-            print("Opción no válida")
+            print("Opción inválida")
+
 
 if __name__ == "__main__":
     main()
