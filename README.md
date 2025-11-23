@@ -42,7 +42,7 @@ Model: Clases que trabajan con Oracle (Cuenta, Paciente, Doctor).
 
 View: Menú simple por consola para probar las funciones.
 
-Controller: Lógica que conecta vista y modelos.
+Controller: Lógica que conecta vista y modelos, representados en este caso en el main.py
 
 Config: Conexión a la base de datos Oracle.
 
