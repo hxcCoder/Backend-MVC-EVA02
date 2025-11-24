@@ -6,7 +6,7 @@ Descripcion
 Sistema de gestion de usuarios, pacientes y doctores para un entorno clínico, 
 construido en Python usando patron MVC y conexión a Oracle DB XE 21c.
 
-Fue hecho a mano usando guias y herramientas como la IA, esta funcional y organice los datos para que se puedan entender facilmente.
+El sistema se construyó manualmente, con apoyo de guías y herramientas de IA para acelerar el desarrollo.
 
 El objetivo seria: Diseñar y construir un sistema simple, legible y funcional que permita gestionar información de un entorno clínico, 
 manteniendo una arquitectura clara y una base de datos estructurada que pueda ampliarse en etapas posteriores.
