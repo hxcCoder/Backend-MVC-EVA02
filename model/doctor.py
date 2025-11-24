@@ -1,54 +1,89 @@
 from model.cuenta import Cuenta
 
-class Doctor(Cuenta):
+class Doctor:
     def __init__(self, db):
-        super().__init__(db)
-        self.especialidad = None
-        self.horario_atencion = None
-        self.fecha_ingreso = None
+        self.db = db
+        self.cuenta = Cuenta(db)  # Composición en vez de herencia
 
     # ---------------------------
     # CREAR DOCTOR
     # ---------------------------
     def crear_doctor(self, datos: dict) -> bool:
         """
-        Espera diccionario con claves:
-        {'username', 'password', 'rol', 'nombre', 'apellido', 'email', 
-         'especialidad', 'horario_atencion', 'fecha_ingreso'}
+        Datos esperados:
+        username, password, nombre, apellido, email, especialidad, horario_atencion, fecha_ingreso
         """
-        return super().crear_cuenta(datos)
 
-    # ---------------------------
-    # ACTUALIZAR DOCTOR
-    # ---------------------------
-    def actualizar_doctor(self, usuario_id: int, datos: dict) -> bool:
-        query = f"""
-        UPDATE {self.table} SET 
-        username = :1, nombre = :2, apellido = :3, email = :4, 
-        especialidad = :5, horario_atencion = :6, fecha_ingreso = :7
-        WHERE id = :8
-        """
-        params = (
-            datos.get("username"),
-            datos.get("nombre"),
-            datos.get("apellido"),
-            datos.get("email"),
-            datos.get("especialidad"),
-            datos.get("horario_atencion"),
-            datos.get("fecha_ingreso"),
-            usuario_id
-        )
-        self.execute_query(query, params)
+        # 1. Crear la cuenta base (rol = "medico")
+        cuenta_info = {
+            "username": datos["username"],
+            "password": datos["password"],
+            "rol": "medico",
+            "nombre": datos["nombre"],
+            "apellido": datos["apellido"],
+            "email": datos["email"]
+        }
+
+        id_cuenta = self.cuenta.crear_cuenta_retornando_id(cuenta_info)
+        if not id_cuenta:
+            return False
+
+        # 2. Insertar datos específicos de doctor
+        cursor = self.db.obtener_cursor()
+        cursor.execute("""
+            INSERT INTO doctor (id_cuenta, especialidad, horario_atencion, fecha_ingreso)
+            VALUES (:1, :2, :3, :4)
+        """, (
+            id_cuenta,
+            datos["especialidad"],
+            datos["horario_atencion"],
+            datos["fecha_ingreso"]
+        ))
+
+        self.db.connection.commit()
         return True
 
     # ---------------------------
     # LISTAR DOCTORES
     # ---------------------------
     def listar_doctores(self):
-        return super().listar_cuentas()
+        cursor = self.db.obtener_cursor()
+        cursor.execute("""
+            SELECT 
+                d.id_doctor,
+                c.username,
+                c.nombre,
+                c.apellido,
+                c.email,
+                d.especialidad,
+                d.horario_atencion,
+                d.fecha_ingreso
+            FROM doctor d
+            JOIN cuenta c ON c.id = d.id_cuenta
+        """)
+
+        return [dict(zip([c[0] for c in cursor.description], fila)) for fila in cursor]
 
     # ---------------------------
-    # OBTENER DOCTOR POR ID
+    # OBTENER DOCTOR
     # ---------------------------
-    def obtener_doctor(self, usuario_id: int):
-        return super().get_by_id(usuario_id)
+    def obtener_doctor(self, id_doctor):
+        cursor = self.db.obtener_cursor()
+        cursor.execute("""
+            SELECT 
+                d.id_doctor,
+                c.id AS id_cuenta,
+                c.username,
+                c.nombre,
+                c.apellido,
+                c.email,
+                d.especialidad,
+                d.horario_atencion,
+                d.fecha_ingreso
+            FROM doctor d
+            JOIN cuenta c ON c.id = d.id_cuenta
+            WHERE d.id_doctor = :1
+        """, (id_doctor,))
+
+        fila = cursor.fetchone()
+        return dict(zip([c[0] for c in cursor.description], fila)) if fila else None

@@ -19,23 +19,40 @@ class Paciente(BaseModel):
     # Actualizar paciente
     # ---------------------------
     def actualizar_cliente(self, usuario_id: int, datos: dict) -> bool:
+
+        # Obtener valores actuales
+        actual = self.get_by_id(usuario_id)
+        if not actual:
+            return False
+
+        # Reemplazar solo lo que se envía
+        nuevos = {
+            "username": datos.get("username", actual.get("USERNAME")),
+            "nombre": datos.get("nombre", actual.get("NOMBRE")),
+            "apellido": datos.get("apellido", actual.get("APELLIDO")),
+            "email": datos.get("email", actual.get("EMAIL")),
+            "comuna": datos.get("comuna", actual.get("COMUNA")),
+            "fecha_primera_visita": datos.get("fecha_primera_visita", actual.get("FECHA_PRIMERA_VISITA"))
+        }
+
         query = f"""
         UPDATE {self.table} SET 
         username = :1, nombre = :2, apellido = :3, email = :4, 
         comuna = :5, fecha_primera_visita = :6
         WHERE id = :7
         """
+
         params = (
-            datos.get("username"),
-            datos.get("nombre"),
-            datos.get("apellido"),
-            datos.get("email"),
-            datos.get("comuna"),
-            datos.get("fecha_primera_visita"),
+            nuevos["username"],
+            nuevos["nombre"],
+            nuevos["apellido"],
+            nuevos["email"],
+            nuevos["comuna"],
+            nuevos["fecha_primera_visita"],
             usuario_id
         )
+
         result = self.execute_query(query, params)
-        # Aseguramos que devuelva booleano
         return result is True
 
     # ---------------------------

@@ -1,79 +1,56 @@
 # view.py
 
-def mostrar_menu_principal():
-    print("\n===== SISTEMA CLÍNICO MEDIPLUS =====")
-    print("1. Iniciar sesión")
-    print("0. Salir")
-    return input("Seleccione una opción: ")
-
-
-def mostrar_menu(usuario: dict):
-    """
-    Menú dinámico según el rol del usuario.
-    usuario = { username, rol, nombre, apellido, email }
-    """
-
-    nombre = usuario.get("nombre", "Usuario")
-    rol = usuario.get("rol", "general")
-
-    print(f"\nBienvenido {nombre} - Rol: {rol}\n")
-
-    if rol == "admin":
-        print("1. Gestionar Usuarios")
-        print("2. Gestionar Pacientes")
-        print("3. Gestionar Médicos")
-        print("4. Gestionar Insumos")
-        print("0. Cerrar sesión")
-
-    elif rol == "paciente":
-        print("1. Ver mis datos")
-        print("2. Actualizar mis datos")
-        print("0. Cerrar sesión")
-
-    elif rol == "medico":
-        print("1. Ver pacientes")
-        print("2. Actualizar paciente")
-        print("3. Gestionar agenda")
-        print("0. Cerrar sesión")
-
-    else:
-        print("Rol no definido")
-
-    return input("Seleccione una opción: ")
-
-
-# -------------------------------
-# SUBMENÚS
-# -------------------------------
-
-def menu_insumos(insumos_controller):
+def menu_usuarios(usuarios_controller):
     while True:
-        print("\n--- Gestión de Insumos ---")
-        print("1. Crear insumo")
-        print("2. Listar insumos")
-        print("3. Eliminar insumo")
+        print("\n--- Gestión de Usuarios ---")
+        print("1. Crear usuario")
+        print("2. Listar usuarios")
+        print("3. Actualizar usuario")
+        print("4. Eliminar usuario")
         print("0. Volver")
 
         op = input("Opción: ")
 
+        # Crear usuario
         if op == "1":
+            print("\n--- Crear Usuario ---")
+            username = input("Username: ")
+            password = input("Password: ")
             nombre = input("Nombre: ")
-            tipo = input("Tipo: ")
-            stock = int(input("Stock: "))
+            apellido = input("Apellido: ")
+            email = input("Email: ")
+            rol = input("Rol (admin/medico/paciente): ")
 
-            insumos_controller.crear(nombre, tipo, stock)
-            print("✔ Insumo creado exitosamente.")
+            usuarios_controller.crear(username, password, nombre, apellido, email, rol)
+            print("✔ Usuario creado exitosamente.")
 
+        # Listar usuarios
         elif op == "2":
-            datos = insumos_controller.listar()
-            print("\n--- LISTA DE INSUMOS ---")
-            for fila in datos:
-                print(fila)
+            print("\n--- Lista de Usuarios ---")
+            usuarios = usuarios_controller.listar()
+            for u in usuarios:
+                print(u)
 
+        # Actualizar usuario
         elif op == "3":
-            id_eliminar = input("ID a eliminar: ")
-            insumos_controller.eliminar(int(id_eliminar))
-            print("✔ Insumo eliminado.")
+            print("\n--- Actualizar Usuario ---")
+            user_id = int(input("ID del usuario: "))
+            nuevo_nombre = input("Nuevo nombre: ")
+            nuevo_apellido = input("Nuevo apellido: ")
+            nuevo_email = input("Nuevo email: ")
+            nuevo_rol = input("Nuevo rol: ")
+
+            usuarios_controller.actualizar(
+                user_id, nuevo_nombre, nuevo_apellido, nuevo_email, nuevo_rol
+            )
+            print("✔ Usuario actualizado.")
+
+        # Eliminar usuario
+        elif op == "4":
+            print("\n--- Eliminar Usuario ---")
+            user_id = int(input("ID del usuario: "))
+            usuarios_controller.eliminar(user_id)
+            print("✔ Usuario eliminado.")
 
         elif op == "0":
             break

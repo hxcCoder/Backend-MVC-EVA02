@@ -23,11 +23,23 @@ class Insumo:
         return dict(zip([c[0] for c in cursor.description], fila)) if fila else None
 
     def actualizar(self, id_, datos):
+        # Obtener datos actuales
+        actual = self.obtener_por_id(id_)
+        if not actual:
+            return False
+
+        # Mantener valores si no se envían
+        nuevos = {
+            "nombre": datos.get("nombre", actual["NOMBRE"]),
+            "tipo": datos.get("tipo", actual["TIPO"]),
+            "stock": datos.get("stock", actual["STOCK"])
+        }
+
         cursor = self.db.obtener_cursor()
         cursor.execute("""
             UPDATE insumos SET nombre=:1, tipo=:2, stock=:3
             WHERE id=:4
-        """, (datos["nombre"], datos["tipo"], datos["stock"], id_))
+        """, (nuevos["nombre"], nuevos["tipo"], nuevos["stock"], id_))
         self.db.connection.commit()
         return True
 
@@ -35,4 +47,6 @@ class Insumo:
         cursor = self.db.obtener_cursor()
         cursor.execute("DELETE FROM insumos WHERE id = :1", (id_,))
         self.db.connection.commit()
-        return True
+
+        # Verificar si eliminó algo
+        return cursor.rowcount > 0
