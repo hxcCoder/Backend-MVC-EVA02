@@ -32,7 +32,8 @@ Python 3.13
 
 # UML y relaciones
 
-<img width="482" height="1141" alt="image" src="https://github.com/user-attachments/assets/94ad8560-8b43-4dc8-a2c9-5fc5d5e0449f" />
+<img width="785" height="749" alt="image" src="https://github.com/user-attachments/assets/81c42ed7-1c2e-4a47-9511-bbd08c71c7e8" />
+
 
 
 Arquitectura usada
